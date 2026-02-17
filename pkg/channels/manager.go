@@ -176,6 +176,19 @@ func (m *Manager) initChannels() error {
 		}
 	}
 
+	if m.config.Channels.XMPP.Enabled && m.config.Channels.XMPP.Server != "" {
+		logger.DebugC("channels", "Attempting to initialize XMPP channel")
+		xmppCh, err := NewXMPPChannel(m.config.Channels.XMPP, m.bus)
+		if err != nil {
+			logger.ErrorCF("channels", "Failed to initialize XMPP channel", map[string]interface{}{
+				"error": err.Error(),
+			})
+		} else {
+			m.channels["xmpp"] = xmppCh
+			logger.InfoC("channels", "XMPP channel enabled successfully")
+		}
+	}
+
 	logger.InfoCF("channels", "Channel initialization completed", map[string]interface{}{
 		"enabled_channels": len(m.channels),
 	})

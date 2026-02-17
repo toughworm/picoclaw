@@ -29,6 +29,7 @@ var supportedChannels = map[string]bool{
 	"qq":       true,
 	"dingtalk": true,
 	"maixcam":  true,
+	"xmpp":     true,
 }
 
 func findOpenClawConfig(openclawHome string) (string, error) {
@@ -196,6 +197,21 @@ func ConvertConfig(data map[string]interface{}) (*config.Config, []string, error
 				}
 				if v, ok := getFloat(cMap, "port"); ok {
 					cfg.Channels.MaixCam.Port = int(v)
+				}
+			case "xmpp":
+				cfg.Channels.XMPP.Enabled = enabled
+				cfg.Channels.XMPP.AllowFrom = allowFrom
+				if v, ok := getString(cMap, "server"); ok {
+					cfg.Channels.XMPP.Server = v
+				}
+				if v, ok := getString(cMap, "domain"); ok {
+					cfg.Channels.XMPP.Domain = v
+				}
+				if v, ok := getString(cMap, "username"); ok {
+					cfg.Channels.XMPP.Username = v
+				}
+				if v, ok := getString(cMap, "password"); ok {
+					cfg.Channels.XMPP.Password = v
 				}
 			}
 		}

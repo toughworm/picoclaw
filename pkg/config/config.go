@@ -79,6 +79,7 @@ type ChannelsConfig struct {
 	Slack    SlackConfig    `json:"slack"`
 	LINE     LINEConfig     `json:"line"`
 	OneBot   OneBotConfig   `json:"onebot"`
+	XMPP     XMPPConfig     `json:"xmpp"`
 }
 
 type WhatsAppConfig struct {
@@ -154,6 +155,21 @@ type OneBotConfig struct {
 	ReconnectInterval  int                 `json:"reconnect_interval" env:"PICOCLAW_CHANNELS_ONEBOT_RECONNECT_INTERVAL"`
 	GroupTriggerPrefix []string            `json:"group_trigger_prefix" env:"PICOCLAW_CHANNELS_ONEBOT_GROUP_TRIGGER_PREFIX"`
 	AllowFrom          FlexibleStringSlice `json:"allow_from" env:"PICOCLAW_CHANNELS_ONEBOT_ALLOW_FROM"`
+}
+
+type XMPPConfig struct {
+	Enabled           bool                `json:"enabled" env:"PICOCLAW_CHANNELS_XMPP_ENABLED"`
+	Server            string              `json:"server" env:"PICOCLAW_CHANNELS_XMPP_SERVER"`
+	Domain            string              `json:"domain" env:"PICOCLAW_CHANNELS_XMPP_DOMAIN"`
+	Username          string              `json:"username" env:"PICOCLAW_CHANNELS_XMPP_USERNAME"`
+	Password          string              `json:"password" env:"PICOCLAW_CHANNELS_XMPP_PASSWORD"`
+	Resource          string              `json:"resource" env:"PICOCLAW_CHANNELS_XMPP_RESOURCE"`
+	Rooms             []string            `json:"rooms" env:"PICOCLAW_CHANNELS_XMPP_ROOMS"`
+	Nickname          string              `json:"nickname" env:"PICOCLAW_CHANNELS_XMPP_NICKNAME"`
+	UseTLS            bool                `json:"use_tls" env:"PICOCLAW_CHANNELS_XMPP_USE_TLS"`
+	InsecureSkipVerify bool               `json:"insecure_skip_verify" env:"PICOCLAW_CHANNELS_XMPP_INSECURE_SKIP_VERIFY"`
+	EnableReceipts    bool                `json:"enable_receipts" env:"PICOCLAW_CHANNELS_XMPP_ENABLE_RECEIPTS"`
+	AllowFrom         FlexibleStringSlice `json:"allow_from" env:"PICOCLAW_CHANNELS_XMPP_ALLOW_FROM"`
 }
 
 type HeartbeatConfig struct {
@@ -291,6 +307,20 @@ func DefaultConfig() *Config {
 				AccessToken:        "",
 				ReconnectInterval:  5,
 				GroupTriggerPrefix: []string{},
+				AllowFrom:          FlexibleStringSlice{},
+			},
+			XMPP: XMPPConfig{
+				Enabled:            false,
+				Server:             "",
+				Domain:             "",
+				Username:           "",
+				Password:           "",
+				Resource:           "picoclaw",
+				Rooms:              []string{},
+				Nickname:           "PicoClaw",
+				UseTLS:             true,
+				InsecureSkipVerify: false,
+				EnableReceipts:     true,
 				AllowFrom:          FlexibleStringSlice{},
 			},
 		},

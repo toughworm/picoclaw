@@ -68,6 +68,20 @@
       "reconnect_interval": 5,
       "group_trigger_prefix": [],
       "allow_from": []
+    },
+    "xmpp": {
+      "enabled": false,
+      "server": "example.com:5222",
+      "domain": "example.com",
+      "username": "bot",
+      "password": "YOUR_PASSWORD",
+      "resource": "picoclaw",
+      "rooms": [],
+      "nickname": "PicoClaw",
+      "use_tls": true,
+      "insecure_skip_verify": false,
+      "enable_receipts": true,
+      "allow_from": []
     }
   },
   "providers": {
