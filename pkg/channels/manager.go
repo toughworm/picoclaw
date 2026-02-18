@@ -17,6 +17,11 @@ import (
 	"github.com/sipeed/picoclaw/pkg/logger"
 )
 
+type TypingChannel interface {
+	Channel
+	SendTyping(ctx context.Context, chatID string, composing bool) error
+}
+
 type Manager struct {
 	channels     map[string]Channel
 	bus          *bus.MessageBus
@@ -355,4 +360,21 @@ func (m *Manager) SendToChannel(ctx context.Context, channelName, chatID, conten
 	}
 
 	return channel.Send(ctx, msg)
+}
+
+func (m *Manager) NotifyTyping(ctx context.Context, channelName, chatID string, composing bool) {
+	m.mu.RLock()
+	channel, exists := m.channels[channelName]
+	m.mu.RUnlock()
+
+	if !exists {
+		return
+	}
+
+	typingChannel, ok := channel.(TypingChannel)
+	if !ok {
+		return
+	}
+
+	_ = typingChannel.SendTyping(ctx, chatID, composing)
 }
