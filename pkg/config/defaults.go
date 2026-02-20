@@ -17,6 +17,7 @@ func DefaultConfig() *Config {
 				MaxTokens:           8192,
 				Temperature:         nil, // nil means use provider default
 				MaxToolIterations:   20,
+				HistoryThreshold:    20,
 			},
 		},
 		Bindings: []AgentBinding{},
