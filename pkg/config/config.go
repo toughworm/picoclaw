@@ -272,10 +272,14 @@ type OneBotConfig struct {
 }
 
 type XMPPConfig struct {
-	Enabled   bool                `json:"enabled" env:"PICOCLAW_CHANNELS_XMPP_ENABLED"`
-	JID       string              `json:"jid" env:"PICOCLAW_CHANNELS_XMPP_JID"`
-	Password  string              `json:"password" env:"PICOCLAW_CHANNELS_XMPP_PASSWORD"`
-	AllowFrom FlexibleStringSlice `json:"allow_from" env:"PICOCLAW_CHANNELS_XMPP_ALLOW_FROM"`
+	Enabled      bool                `json:"enabled" env:"PICOCLAW_CHANNELS_XMPP_ENABLED"`
+	JID          string              `json:"jid" env:"PICOCLAW_CHANNELS_XMPP_JID"`
+	Password     string              `json:"password" env:"PICOCLAW_CHANNELS_XMPP_PASSWORD"`
+	Server       string              `json:"server" env:"PICOCLAW_CHANNELS_XMPP_SERVER"`
+	UploadDomain string              `json:"upload_domain" env:"PICOCLAW_CHANNELS_XMPP_UPLOAD_DOMAIN"`
+	AllowFrom    FlexibleStringSlice `json:"allow_from" env:"PICOCLAW_CHANNELS_XMPP_ALLOW_FROM"`
+}
+
 type WeComConfig struct {
 	Enabled        bool                `json:"enabled" env:"PICOCLAW_CHANNELS_WECOM_ENABLED"`
 	Token          string              `json:"token" env:"PICOCLAW_CHANNELS_WECOM_TOKEN"`
@@ -451,141 +455,6 @@ type ExecConfig struct {
 }
 
 type ToolsConfig struct {
-	Web  WebToolsConfig  `json:"web"`
-	Cron CronToolsConfig `json:"cron"`
-}
-
-func DefaultConfig() *Config {
-	return &Config{
-		Agents: AgentsConfig{
-			Defaults: AgentDefaults{
-				Workspace:           "~/.picoclaw/workspace",
-				RestrictToWorkspace: true,
-				Provider:            "",
-				Model:               "glm-4.7",
-				MaxTokens:           8192,
-				Temperature:         0.7,
-				MaxToolIterations:   20,
-			},
-		},
-		Channels: ChannelsConfig{
-			WhatsApp: WhatsAppConfig{
-				Enabled:   false,
-				BridgeURL: "ws://localhost:3001",
-				AllowFrom: FlexibleStringSlice{},
-			},
-			Telegram: TelegramConfig{
-				Enabled:   false,
-				Token:     "",
-				AllowFrom: FlexibleStringSlice{},
-			},
-			Feishu: FeishuConfig{
-				Enabled:           false,
-				AppID:             "",
-				AppSecret:         "",
-				EncryptKey:        "",
-				VerificationToken: "",
-				AllowFrom:         FlexibleStringSlice{},
-			},
-			Discord: DiscordConfig{
-				Enabled:   false,
-				Token:     "",
-				AllowFrom: FlexibleStringSlice{},
-			},
-			MaixCam: MaixCamConfig{
-				Enabled:   false,
-				Host:      "0.0.0.0",
-				Port:      18790,
-				AllowFrom: FlexibleStringSlice{},
-			},
-			QQ: QQConfig{
-				Enabled:   false,
-				AppID:     "",
-				AppSecret: "",
-				AllowFrom: FlexibleStringSlice{},
-			},
-			DingTalk: DingTalkConfig{
-				Enabled:      false,
-				ClientID:     "",
-				ClientSecret: "",
-				AllowFrom:    FlexibleStringSlice{},
-			},
-			Slack: SlackConfig{
-				Enabled:   false,
-				BotToken:  "",
-				AppToken:  "",
-				AllowFrom: FlexibleStringSlice{},
-			},
-			LINE: LINEConfig{
-				Enabled:            false,
-				ChannelSecret:      "",
-				ChannelAccessToken: "",
-				WebhookHost:        "0.0.0.0",
-				WebhookPort:        18791,
-				WebhookPath:        "/webhook/line",
-				AllowFrom:          FlexibleStringSlice{},
-			},
-			OneBot: OneBotConfig{
-				Enabled:            false,
-				WSUrl:              "ws://127.0.0.1:3001",
-				AccessToken:        "",
-				ReconnectInterval:  5,
-				GroupTriggerPrefix: []string{},
-				AllowFrom:          FlexibleStringSlice{},
-			},
-			XMPP: XMPPConfig{
-				Enabled:   false,
-				JID:       "",
-				Password:  "",
-				AllowFrom: FlexibleStringSlice{},
-			},
-		},
-		Providers: ProvidersConfig{
-			Anthropic:    ProviderConfig{},
-			OpenAI:       ProviderConfig{},
-			OpenRouter:   ProviderConfig{},
-			Groq:         ProviderConfig{},
-			Zhipu:        ProviderConfig{},
-			VLLM:         ProviderConfig{},
-			Gemini:       ProviderConfig{},
-			Nvidia:       ProviderConfig{},
-			Moonshot:     ProviderConfig{},
-			ShengSuanYun: ProviderConfig{},
-		},
-		Gateway: GatewayConfig{
-			Host: "0.0.0.0",
-			Port: 18790,
-		},
-		Tools: ToolsConfig{
-			Web: WebToolsConfig{
-				Brave: BraveConfig{
-					Enabled:    false,
-					APIKey:     "",
-					MaxResults: 5,
-				},
-				DuckDuckGo: DuckDuckGoConfig{
-					Enabled:    true,
-					MaxResults: 5,
-				},
-				Perplexity: PerplexityConfig{
-					Enabled:    false,
-					APIKey:     "",
-					MaxResults: 5,
-				},
-			},
-			Cron: CronToolsConfig{
-				ExecTimeoutMinutes: 5, // default 5 minutes for LLM operations
-			},
-		},
-		Heartbeat: HeartbeatConfig{
-			Enabled:  true,
-			Interval: 30, // default 30 minutes
-		},
-		Devices: DevicesConfig{
-			Enabled:    false,
-			MonitorUSB: true,
-		},
-	}
 	Web    WebToolsConfig    `json:"web"`
 	Cron   CronToolsConfig   `json:"cron"`
 	Exec   ExecConfig        `json:"exec"`

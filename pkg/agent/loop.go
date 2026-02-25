@@ -158,11 +158,12 @@ func registerSharedTools(cfg *config.Config, msgBus *bus.MessageBus, registry *A
 
 		// Message tool
 		messageTool := tools.NewMessageTool()
-		messageTool.SetSendCallback(func(channel, chatID, content string) error {
+		messageTool.SetSendCallback(func(channel, chatID, content string, media []string) error {
 			msgBus.PublishOutbound(bus.OutboundMessage{
 				Channel: channel,
 				ChatID:  chatID,
 				Content: content,
+				Media:   media,
 			})
 			return nil
 		})
@@ -186,24 +187,7 @@ func registerSharedTools(cfg *config.Config, msgBus *bus.MessageBus, registry *A
 			return registry.CanSpawnSubagent(currentAgentID, targetAgentID)
 		})
 		agent.Tools.Register(spawnTool)
-
-	al := &AgentLoop{
-		bus:            msgBus,
-		provider:       provider,
-		workspace:      workspace,
-		model:          cfg.Agents.Defaults.Model,
-		contextWindow:  cfg.Agents.Defaults.MaxTokens, // Restore context window for summarization
-		maxIterations:  cfg.Agents.Defaults.MaxToolIterations,
-		sessions:       sessionsManager,
-		state:          stateManager,
-		contextBuilder: contextBuilder,
-		tools:          toolsRegistry,
-		summarizing:    sync.Map{},
-		// Update context builder with the complete tools registry
-		agent.ContextBuilder.SetToolsRegistry(agent.Tools)
 	}
-
-	return al
 }
 
 func (al *AgentLoop) Run(ctx context.Context) error {
@@ -347,8 +331,6 @@ func (al *AgentLoop) processMessage(ctx context.Context, msg bus.InboundMessage)
 		defer al.channelManager.NotifyTyping(ctx, msg.Channel, msg.ChatID, false)
 	}
 
-	return al.runAgentLoop(ctx, processOptions{
-		SessionKey:      msg.SessionKey,
 	// Route to determine agent and session key
 	route := al.registry.ResolveRoute(routing.RouteInput{
 		Channel:    msg.Channel,

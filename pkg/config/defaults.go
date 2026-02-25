@@ -113,6 +113,12 @@ func DefaultConfig() *Config {
 				AllowFrom:      FlexibleStringSlice{},
 				ReplyTimeout:   5,
 			},
+			XMPP: XMPPConfig{
+				Enabled:   false,
+				JID:       "",
+				Password:  "",
+				AllowFrom: FlexibleStringSlice{},
+			},
 		},
 		Providers: ProvidersConfig{
 			OpenAI: OpenAIProviderConfig{WebSearch: true},

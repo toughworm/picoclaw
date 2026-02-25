@@ -191,6 +191,9 @@ func (m *Manager) initChannels() error {
 		} else {
 			m.channels["xmpp"] = xmppCh
 			logger.InfoC("channels", "XMPP channel enabled successfully")
+		}
+	}
+
 	if m.config.Channels.WeCom.Enabled && m.config.Channels.WeCom.Token != "" {
 		logger.DebugC("channels", "Attempting to initialize WeCom channel")
 		wecom, err := NewWeComBotChannel(m.config.Channels.WeCom, m.bus)
